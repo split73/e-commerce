@@ -1,24 +1,58 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import TopNavbar from "./components/TopNavbar";
+import Cart from "./components/Cart";
+import { Container } from "react-bootstrap";
+import SignUp from "./auth/auth-components/SignUp"
+import { AuthProvider } from "./auth/contexts/AuthContext";
+import Dashboard from "./auth/auth-components/Dashboard";
+import Login from "./auth/auth-components/Login";
+import PrivateRoute from "./auth/auth-components/PrivateRoute";
+import ForgotPassword from "./auth/auth-components/ForgotPassword";
+import UpdateProfile from "./auth/auth-components/UpdateProfile";
+import Content from "./components/Content";
 
 function App() {
   return (
+    <>
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <BrowserRouter>
+      <AuthProvider>
+        <TopNavbar></TopNavbar>
+      </AuthProvider>
+    <Container className="d-flex align-items-center justify-content-center"
+      style={{ minHeight: "100vh"}}
+    >
+    <AuthProvider>
+      <Routes>
+      <Route path="/" element={
+          <Content></Content>
+        }></Route>
+        <Route path="/cart" element={
+          <Cart></Cart>
+        }>
+        
+          </Route>
+            <Route path="/profile-settings" element={
+              <PrivateRoute>
+              <Dashboard/>
+              </PrivateRoute>
+            }
+          ></Route>
+            <Route path="/signup" element={<SignUp/>} />
+            <Route path="/login" element={<Login/>} />
+            <Route path="/forgot-password" element={<ForgotPassword/>} />
+            <Route path="/update-profile" element={
+            <PrivateRoute>
+              <UpdateProfile/>
+            </PrivateRoute>
+            }
+          ></Route>
+    </Routes>
+      </AuthProvider>
+      </Container>
+    </BrowserRouter>
     </div>
+    </>
   );
 }
 
