@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { Card, Button } from 'react-bootstrap';
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSortAlphaUpAlt } from '@fortawesome/free-solid-svg-icons'
+import { faArrowUpZA, faArrowDownZA } from '@fortawesome/free-solid-svg-icons'
+import "./assets/Content.css"
 
 let data;
+
 export default function Content() {
   
     const [items, setItems] = useState([]);
@@ -13,14 +15,26 @@ export default function Content() {
   const [error, setError] = useState(null);
   const [page, setPage] = useState(13);
   const [sortDirection, setSortDirection] = useState(true)
+  const [sortButtonIcon, setSortButtonIcon] = useState(faArrowUpZA)
+
+  const handleSearch = () => {
+    setDisplayItems([])
+    const keyword = "beatae ";
+    const filtered = items.filter(entry => Object.values(entry).some(val => typeof val === "string" && val.includes(keyword)));
+    console.log(filtered)
+    setItems(filtered);
+    displayScrollData();
+  }
 
   const handleSortItems = () => {
+    window.scrollTo(0, 0)
     if (sortDirection){
       data.sort((a, b) => {
         if (a.title < b.title) {
           return -1;
         }
       });
+      setSortButtonIcon(faArrowDownZA)
       setSortDirection(false)
     } else {
       data.sort((a, b) => {
@@ -28,6 +42,7 @@ export default function Content() {
           return -1;
         }
       });
+      setSortButtonIcon(faArrowUpZA)
       setSortDirection(true)
     }
     
@@ -66,17 +81,21 @@ export default function Content() {
       };
 
       const displayScrollData = () => {
-        setDisplayItems(prev => [...prev, items[page]]);
-        setPage(prevPage => prevPage + 1);
+        for (let i = page; i < page + 12; i++){
+          setDisplayItems(prev => [...prev, items[i]]);
+        }
+        setPage(prevPage => prevPage + 12);
       }
 
       useEffect(() => {
         fetchData();
       }, []);
   return (
-
-    <div className='qqq' style={{position: "relative", top: 20}}>
-    <button onClick={handleSortItems}><FontAwesomeIcon icon={faSortAlphaUpAlt} /></button>
+    <div>
+    <button style={{position: "fixed", left: "5%", top: "13%"}} onClick={handleSearch}>sssssss</button>
+     <button id='sort-button-content' onClick={handleSortItems}><FontAwesomeIcon icon={sortButtonIcon} />sort</button>
+      <div className='qqq' style={{position: "relative", top: 20}}>
+   
         <InfiniteScroll
       dataLength={displayItems.length}
       next={displayScrollData}
@@ -98,5 +117,7 @@ export default function Content() {
     </InfiniteScroll>
     {error && <p>Error: {error.message}</p>}
     </div>
+    </div>
+    
   )
 }

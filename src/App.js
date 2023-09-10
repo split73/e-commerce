@@ -24,29 +24,21 @@ function App() {
     >
     <AuthProvider>
       <Routes>
-      <Route path="/" element={
-          <Content></Content>
-        }></Route>
-        <Route path="/cart" element={
-          <Cart></Cart>
-        }>
-        
-          </Route>
-            <Route path="/profile-settings" element={
+      <Route path="/" element={<Content/>}/>
+      <Route path="/cart" element={<Cart/>}/>
+      <Route path="/profile-settings" element={
               <PrivateRoute>
               <Dashboard/>
               </PrivateRoute>
-            }
-          ></Route>
-            <Route path="/signup" element={<SignUp/>} />
-            <Route path="/login" element={<Login/>} />
-            <Route path="/forgot-password" element={<ForgotPassword/>} />
-            <Route path="/update-profile" element={
-            <PrivateRoute>
-              <UpdateProfile/>
-            </PrivateRoute>
-            }
-          ></Route>
+      }/>
+      <Route path="/signup" element={<SignUp/>} />
+      <Route path="/login" element={<Login/>} />
+      <Route path="/forgot-password" element={<ForgotPassword/>} />
+      <Route path="/update-profile" element={
+        <PrivateRoute>
+          <UpdateProfile/>
+        </PrivateRoute>
+      }/>
     </Routes>
       </AuthProvider>
       </Container>
