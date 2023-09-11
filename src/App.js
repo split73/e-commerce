@@ -9,7 +9,6 @@ import Login from "./auth/auth-components/Login";
 import PrivateRoute from "./auth/auth-components/PrivateRoute";
 import ForgotPassword from "./auth/auth-components/ForgotPassword";
 import UpdateProfile from "./auth/auth-components/UpdateProfile";
-import Content from "./components/Content";
 
 function App() {
   return (
@@ -24,7 +23,6 @@ function App() {
     >
     <AuthProvider>
       <Routes>
-      <Route path="/" element={<Content/>}/>
       <Route path="/cart" element={<Cart/>}/>
       <Route path="/profile-settings" element={
               <PrivateRoute>

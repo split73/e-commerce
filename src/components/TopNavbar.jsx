@@ -8,10 +8,23 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import { useNavigate } from 'react-router-dom';
 import SideNavbar from './SideNavbar';
 import { useAuth } from '../auth/contexts/AuthContext';
+import Content from './Content';
+import {  Routes, Route } from "react-router-dom";
 
 export default function TopNavbar() {
   const [showSideBar, setShowSideBar] = useState(false);
-  const { currentUser } = useAuth()
+  const { currentUser } = useAuth();
+  const [searchInput, setSearchInput] = useState("");
+  const [passSearchInput, setPassSearchInput] = useState("");
+
+const handleSearchInput = (e) => {
+  setSearchInput(e.target.value)
+}
+
+const handleSearchButton = () => {
+  console.log("BBTN", searchInput)
+  setPassSearchInput(searchInput)
+}
 
   const handleShowSideBar = () => {
     setShowSideBar(true)
@@ -84,13 +97,18 @@ const handleHideSideBar = () => {
               placeholder="Search"
               className="me-2"
               aria-label="Search"
+              onChange={(e) => handleSearchInput(e)}
             />
-            <Button variant="outline-success">Search</Button>
+            <Button variant="outline-success" onClick={handleSearchButton}>Search</Button>
           </Form>
         </Navbar.Collapse>
       </Container>
     </Navbar>
     <SideNavbar showSideBarProp={showSideBar} hideSideBarProp={handleHideSideBar}></SideNavbar>
+    <Routes>
+    <Route path="/" element={<Content passSearchInput={passSearchInput}/>}/>
+    </Routes>
+    
     </div>
   )
 }
