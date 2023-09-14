@@ -1,0 +1,27 @@
+.content-sort-button{
+    position: fixed;
+
+    width: 100px;
+    z-index: 999;
+}
+
+#sort-button-content{
+    position: fixed;
+    left: 5%;
+    top: 10%;
+    width: 100px;
+    z-index: 999;
+}
+
+#search-button-content{
+    position: fixed;
+    left: 5%;
+    top: 13%;
+    width: 100px;
+    z-index: 999;
+}
+
+.items-container{
+    position: relative;
+    top: 20px;
+}
