@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
@@ -10,25 +10,47 @@ import SideNavbar from './SideNavbar';
 import { useAuth } from '../auth/contexts/AuthContext';
 import Content from './Content';
 import {  Routes, Route } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {faCartShopping} from '@fortawesome/free-solid-svg-icons'
+import { db } from '../auth/firebase';
+import { collection, getDocs } from "firebase/firestore";
 
 export default function TopNavbar() {
   const [showSideBar, setShowSideBar] = useState(false);
   const { currentUser } = useAuth();
   const [searchInput, setSearchInput] = useState("");
   const [passSearchInput, setPassSearchInput] = useState("");
+  const [cartItemsCounter, setCartItemsCounter] = useState(0)
+
+  const increaseCartItemsCounter = () => {
+    setCartItemsCounter(prev => prev + 1)
+  }
+
+  const fetchPost = async () => {
+    if (currentUser !== null){
+      await getDocs(collection(db, currentUser.email))
+          .then((querySnapshot)=>{               
+              const newData = querySnapshot.docs
+              setCartItemsCounter(newData.length);                
+          })
+    }
+  }
+
+useEffect(() => {
+  fetchPost()
+}, [])
 
 const handleSearchInput = (e) => {
-  setSearchInput(e.target.value)
+  setSearchInput(e.target.value);
 }
 
 const handleSearchButton = () => {
-  console.log("BBTN", searchInput)
   setPassSearchInput(searchInput)
+  navigate("/");
 }
 
   const handleShowSideBar = () => {
     setShowSideBar(true)
-    console.log(showSideBar)
 }; 
 
 const handleHideSideBar = () => {
@@ -43,13 +65,10 @@ const handleHideSideBar = () => {
   }
 
   function handleGoToCart(){
-    fetch('https://jsonplaceholder.typicode.com/todos/1')
-      .then(response => response.json())
-      .then(json => console.log(typeof json.title))
     navigate("/cart")
   }
 
-  function handleLogOut(){
+  function handleChangeProfile(){
     navigate("/login")
   }
 
@@ -76,15 +95,11 @@ const handleHideSideBar = () => {
             navbarScroll
           >
             <Nav.Link onClick={handleGoToHome}>Home</Nav.Link>
-            <Nav.Link onClick={handleGoToCart}>Cart</Nav.Link>
+            <Nav.Link onClick={handleGoToCart}>Cart <FontAwesomeIcon icon={faCartShopping} />{cartItemsCounter}</Nav.Link>
             <NavDropdown title="Profile" id="navbarScrollingDropdown">
-              <NavDropdown.Item onClick={handleLogOut} >Log out</NavDropdown.Item>
+              <NavDropdown.Item onClick={handleChangeProfile} >Change profile</NavDropdown.Item>
               <NavDropdown.Item onClick={handleProfileSettings}>
                Settings
-              </NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item>
-                Change profile
               </NavDropdown.Item>
             </NavDropdown>
             <Nav.Link onClick={handleNavigateToProfSettings}>
@@ -104,9 +119,9 @@ const handleHideSideBar = () => {
         </Navbar.Collapse>
       </Container>
     </Navbar>
-    <SideNavbar showSideBarProp={showSideBar} hideSideBarProp={handleHideSideBar}></SideNavbar>
+    <SideNavbar showSideBarProp={showSideBar} hideSideBarProp={handleHideSideBar} ></SideNavbar>
     <Routes>
-    <Route path="/" element={<Content passSearchInput={passSearchInput}/>}/>
+    <Route path="/" element={<Content passSearchInput={passSearchInput} increaseCartItemsCounter={increaseCartItemsCounter}/>}/>
     </Routes>
     
     </div>

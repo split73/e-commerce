@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Card, Alert } from 'react-bootstrap'
+import { Button, Card, Alert, Container } from 'react-bootstrap'
 import { useAuth } from '../contexts/AuthContext'
 import { Link, useNavigate } from 'react-router-dom'
 
@@ -20,6 +20,9 @@ export default function Dashboard() {
     }
 
   return (
+    <Container className="d-flex align-items-center justify-content-center"
+      style={{ minHeight: "100vh"}}
+    >
     <div id='login-page' style={{marginLeft: "auto", marginRight: "auto", width: 400}}>
         <Card>
             <Card.Body>
@@ -33,5 +36,6 @@ export default function Dashboard() {
             <Button variant='link' onClick={handleLogout}>Log out</Button>
         </div>
     </div>
+    </Container>
   )
 }

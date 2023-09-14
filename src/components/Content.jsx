@@ -3,14 +3,17 @@ import { Card, Button } from 'react-bootstrap';
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowUpZA, faArrowDownZA } from '@fortawesome/free-solid-svg-icons'
-import "./assets/Content.css"
+import "./assets/Content.css";
+import { collection, addDoc } from "firebase/firestore";
+import { db } from '../auth/firebase';
+import { useAuth } from '../auth/contexts/AuthContext';
 
 let data;
 
 export default function Content(props) {
-  
-    const [items, setItems] = useState([]);
-    const [displayItems, setDisplayItems] = useState([])
+  const { currentUser } = useAuth();
+  const [items, setItems] = useState([]);
+  const [displayItems, setDisplayItems] = useState([])
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [page, setPage] = useState(16);
@@ -27,9 +30,20 @@ export default function Content(props) {
     displayScrollData();
   }, [props.passSearchInput]);
 
-  const hadleAddToCart = (item) => {
-    console.log("ADD", item)
-  }
+
+
+  const hadleAddToCart = async (item) => {
+    try {
+        const docRef = await addDoc(collection(db, currentUser.email), {
+          item: item,    
+        });
+        console.log("Document written with ID: ", docRef.id);
+        props.increaseCartItemsCounter()
+      } catch (e) {
+        console.error("Error adding document: ", e);
+      }
+      
+}
 
   const handleSortItems = () => {
     setIsLoading(true)
@@ -66,6 +80,7 @@ export default function Content(props) {
   }
 
     const fetchData = async () => {
+      
       setIsLoading(true)
         setError(null);
         try {
@@ -81,16 +96,14 @@ export default function Content(props) {
         } catch (error) {
           setError(error);
         } 
+        console.log("QQ", isLoading, displayItems)
       };
 
       const displayScrollData = () => {
-        console.log(data.length, "Q", isLoading)
         for (let i = page; i < page + 15; i++){
           if(data[i] !== undefined){
             setDisplayItems(prev => [...prev, data[i]]);
           } else {
-            
-            console.log("FAFAFAF", data, data[i], i)
             setIsLoading(false)
             break;
           }
@@ -104,7 +117,7 @@ export default function Content(props) {
   return (
     <div >
      <button className="content-sort-buttons" id='sort-button-content' onClick={handleSortItems}><FontAwesomeIcon icon={sortButtonIcon} />sort</button>
-      <div className='qqq' style={{position: "relative", top: 20}}>
+      <div className='items-container' >
    
         <InfiniteScroll
       dataLength={displayItems.length}
@@ -115,7 +128,7 @@ export default function Content(props) {
     >
       <div style={{marginLeft: "250px"}}>
         {displayItems.map((item) => (
-          <Card style={{ width: '18rem', float: "left", height: 350}}>
+          <Card key={item.id} style={{ width: '18rem', float: "left", height: 350}}>
       <Card.Body>
         <Card.Img loading="lazy" style={{height: 180, width: "16rem"}} variant="top" src={item.thumbnailUrl}/>
         <Card.Title>{item.title}</Card.Title>

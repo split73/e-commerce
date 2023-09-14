@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Card, Form, Button, Alert } from 'react-bootstrap';
+import { Card, Form, Button, Alert, Container } from 'react-bootstrap';
 import { useAuth } from '../contexts/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -32,6 +32,9 @@ export default function SignUp() {
     }
 
   return (
+    <Container className="d-flex align-items-center justify-content-center"
+      style={{ minHeight: "100vh"}}
+    >
     <div id='login-page' style={{marginLeft: "auto", marginRight: "auto", width: 400}}>
         <Card>
             <Card.Body>
@@ -59,5 +62,6 @@ export default function SignUp() {
             <Link to="/login">login</Link>
         </div>
     </div>
+    </Container>
   )
 }

@@ -20,3 +20,8 @@
     width: 100px;
     z-index: 999;
 }
+
+.items-container{
+    position: relative;
+    top: 20px;
+}
