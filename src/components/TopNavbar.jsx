@@ -14,6 +14,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faCartShopping} from '@fortawesome/free-solid-svg-icons'
 import { db } from '../auth/firebase';
 import { collection, getDocs } from "firebase/firestore";
+import Cart from './Cart';
+import PrivateRoute from '../auth/auth-components/PrivateRoute';
 
 export default function TopNavbar() {
   const [showSideBar, setShowSideBar] = useState(false);
@@ -21,9 +23,14 @@ export default function TopNavbar() {
   const [searchInput, setSearchInput] = useState("");
   const [passSearchInput, setPassSearchInput] = useState("");
   const [cartItemsCounter, setCartItemsCounter] = useState(0)
+  const navigate = useNavigate();
 
   const increaseCartItemsCounter = () => {
     setCartItemsCounter(prev => prev + 1)
+  }
+
+  const decreaseCartItemsCounter = () => {
+    setCartItemsCounter(prev => prev - 1)
   }
 
   const fetchPost = async () => {
@@ -45,8 +52,8 @@ const handleSearchInput = (e) => {
 }
 
 const handleSearchButton = () => {
-  setPassSearchInput(searchInput)
   navigate("/");
+  setPassSearchInput(searchInput)
 }
 
   const handleShowSideBar = () => {
@@ -57,7 +64,7 @@ const handleHideSideBar = () => {
   setShowSideBar(false)
 };  
 
-  const navigate = useNavigate();
+
 
 
   function handleProfileSettings(){
@@ -122,6 +129,11 @@ const handleHideSideBar = () => {
     <SideNavbar showSideBarProp={showSideBar} hideSideBarProp={handleHideSideBar} ></SideNavbar>
     <Routes>
     <Route path="/" element={<Content passSearchInput={passSearchInput} increaseCartItemsCounter={increaseCartItemsCounter}/>}/>
+    <Route path="/cart" element={
+        <PrivateRoute>
+          <Cart decreaseCartItemsCounter={decreaseCartItemsCounter}/>
+        </PrivateRoute>
+      }/>
     </Routes>
     
     </div>

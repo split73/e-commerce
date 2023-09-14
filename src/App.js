@@ -1,6 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import TopNavbar from "./components/TopNavbar";
-import Cart from "./components/Cart";
 import SignUp from "./auth/auth-components/SignUp"
 import { AuthProvider } from "./auth/contexts/AuthContext";
 import Dashboard from "./auth/auth-components/Dashboard";
@@ -19,11 +18,7 @@ function App() {
       </AuthProvider>
     <AuthProvider>
       <Routes>
-      <Route path="/cart" element={
-        <PrivateRoute>
-          <Cart/>
-        </PrivateRoute>
-      }/>
+      
       <Route path="/profile-settings" element={
               <PrivateRoute>
               <Dashboard/>
