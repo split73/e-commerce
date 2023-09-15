@@ -35,7 +35,6 @@ export default function Cart(props) {
     const docRef = doc(db, currentUser.email, item.id);
       deleteDoc(docRef)
         .then(() => {
-          console.log("Entire Document has been deleted successfully.")
           let elementToFilter = item;
           setCartItems(cartItems.filter(item => item.id !== elementToFilter.id));
       })
