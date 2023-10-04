@@ -96,7 +96,6 @@ export default function Content(props) {
         } catch (error) {
           setError(error);
         } 
-        console.log("QQ", isLoading, displayItems)
       };
 
       const displayScrollData = () => {
@@ -124,7 +123,7 @@ export default function Content(props) {
       next={displayScrollData}
       hasMore={isLoading}
       loader={<p style={{position: "absolute", bottom: -100, left: 950}}>Loading...</p>}
-      endMessage={<p style={{position: "absolute", bottom: -100, left: 900}}>No more data to load.</p>}
+      endMessage={<p style={{position: "absolute", bottom: -100, left: 900}}>No data to load.</p>}
     >
       <div style={{marginLeft: "250px"}}>
         {displayItems.map((item) => (

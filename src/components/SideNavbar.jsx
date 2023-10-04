@@ -1,12 +1,14 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { Container, Offcanvas, Form } from 'react-bootstrap';  
+import Toggle from "react-toggle";
+import "./assets/sideBar.css";
 export default function SideNavbar(props) {
-
+  const [isDark, setIsDark] = useState(true);
     
   return (
     <>  
-    <Container className='p-4'>  
-      <Offcanvas show={props.showSideBarProp} onHide={props.hideSideBarProp}>  
+    <Container className='p-4' >  
+      <Offcanvas show={props.showSideBarProp} id="sideBar" onHide={props.hideSideBarProp}>  
         <Offcanvas.Header closeButton>  
           <Offcanvas.Title>Sidebar Title</Offcanvas.Title>  
         </Offcanvas.Header>  
@@ -21,7 +23,13 @@ export default function SideNavbar(props) {
         </div>
       
     </Form>
-          Some dummy text, we can have any text or element at at this place.  
+    <div>Dark mode</div>
+          <Toggle
+              checked={isDark}
+              onChange={({ target }) => setIsDark(target.checked)}
+              icons={{ checked: "", unchecked: "" }}
+              aria-label="Dark mode toggle"
+            />
         </Offcanvas.Body>  
       </Offcanvas>  
       </Container>  

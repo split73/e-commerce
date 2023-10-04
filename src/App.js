@@ -7,6 +7,7 @@ import Login from "./auth/auth-components/Login";
 import PrivateRoute from "./auth/auth-components/PrivateRoute";
 import ForgotPassword from "./auth/auth-components/ForgotPassword";
 import UpdateProfile from "./auth/auth-components/UpdateProfile";
+import Content from "./components/Content";
 
 function App() {
   return (
@@ -24,7 +25,6 @@ function App() {
               <Dashboard/>
               </PrivateRoute>
       }/>
-      
       <Route path="/signup" element={<SignUp/>} />
       <Route path="/login" element={<Login/>} />
       <Route path="/forgot-password" element={<ForgotPassword/>} />
