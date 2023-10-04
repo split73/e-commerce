@@ -14,16 +14,27 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faCartShopping} from '@fortawesome/free-solid-svg-icons'
 import { db } from '../auth/firebase';
 import { collection, getDocs } from "firebase/firestore";
+import Cart from './Cart';
+import PrivateRoute from '../auth/auth-components/PrivateRoute';
+import "./assets/TopNavbar.css";
+import "react-toggle/style.css"
 
 export default function TopNavbar() {
+
+
   const [showSideBar, setShowSideBar] = useState(false);
   const { currentUser } = useAuth();
   const [searchInput, setSearchInput] = useState("");
   const [passSearchInput, setPassSearchInput] = useState("");
   const [cartItemsCounter, setCartItemsCounter] = useState(0)
+  const navigate = useNavigate();
 
   const increaseCartItemsCounter = () => {
     setCartItemsCounter(prev => prev + 1)
+  }
+
+  const decreaseCartItemsCounter = () => {
+    setCartItemsCounter(prev => prev - 1)
   }
 
   const fetchPost = async () => {
@@ -40,13 +51,21 @@ useEffect(() => {
   fetchPost()
 }, [])
 
+const handleSearchInputKeyDown = (e) => {
+  if (e.code === "Enter"){
+    e.preventDefault()
+  }
+}
+
 const handleSearchInput = (e) => {
+  e.preventDefault()
   setSearchInput(e.target.value);
 }
 
 const handleSearchButton = () => {
-  setPassSearchInput(searchInput)
   navigate("/");
+  setPassSearchInput(searchInput);
+  setSearchInput("")
 }
 
   const handleShowSideBar = () => {
@@ -56,9 +75,6 @@ const handleSearchButton = () => {
 const handleHideSideBar = () => {
   setShowSideBar(false)
 };  
-
-  const navigate = useNavigate();
-
 
   function handleProfileSettings(){
     navigate("/profile-settings")
@@ -82,10 +98,10 @@ const handleHideSideBar = () => {
 
   return (
     <div>
-    <Navbar expand="lg"  className="bg-body-tertiary fixed-top"> 
+    <Navbar expand="lg"  className="fixed-top" id='top-navbar'> 
       <Container fluid>
-        <button style={{border: "none"}}onClick={handleShowSideBar}>
-        <Navbar.Brand >Navbar scroll</Navbar.Brand>
+        <button id='to-sideBar' onClick={handleShowSideBar}>
+        <Navbar.Brand style={{position: "relative", left: "9px"}}>Side bar</Navbar.Brand>
         </button>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
@@ -97,15 +113,17 @@ const handleHideSideBar = () => {
             <Nav.Link onClick={handleGoToHome}>Home</Nav.Link>
             <Nav.Link onClick={handleGoToCart}>Cart <FontAwesomeIcon icon={faCartShopping} />{cartItemsCounter}</Nav.Link>
             <NavDropdown title="Profile" id="navbarScrollingDropdown">
-              <NavDropdown.Item onClick={handleChangeProfile} >Change profile</NavDropdown.Item>
-              <NavDropdown.Item onClick={handleProfileSettings}>
+              <NavDropdown.Item  onClick={handleChangeProfile} >Change profile</NavDropdown.Item>
+              <NavDropdown.Item  onClick={handleProfileSettings}>
                Settings
               </NavDropdown.Item>
             </NavDropdown>
             <Nav.Link onClick={handleNavigateToProfSettings}>
-              {currentUser && currentUser.email}
+              {currentUser && <div>{currentUser.email}</div>}
             </Nav.Link>
+            
           </Nav>
+          
           <Form className="d-flex">
             <Form.Control
               type="search"
@@ -113,6 +131,8 @@ const handleHideSideBar = () => {
               className="me-2"
               aria-label="Search"
               onChange={(e) => handleSearchInput(e)}
+              onKeyDown={handleSearchInputKeyDown}
+              value={searchInput}
             />
             <Button variant="outline-success" onClick={handleSearchButton}>Search</Button>
           </Form>
@@ -122,6 +142,11 @@ const handleHideSideBar = () => {
     <SideNavbar showSideBarProp={showSideBar} hideSideBarProp={handleHideSideBar} ></SideNavbar>
     <Routes>
     <Route path="/" element={<Content passSearchInput={passSearchInput} increaseCartItemsCounter={increaseCartItemsCounter}/>}/>
+    <Route path="/cart" element={
+        <PrivateRoute>
+          <Cart decreaseCartItemsCounter={decreaseCartItemsCounter}/>
+        </PrivateRoute>
+      }/>
     </Routes>
     
     </div>

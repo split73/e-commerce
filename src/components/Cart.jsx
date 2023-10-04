@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUpZA, faArrowDownZA } from '@fortawesome/free-solid-svg-icons';
 import "./assets/Content.css";
 
-export default function Cart() {
+export default function Cart(props) {
   const { currentUser } = useAuth();
   const [cartItems, setCartItems] = useState([]);
   const [sortDirection, setSortDirection] = useState(true);
@@ -35,13 +35,13 @@ export default function Cart() {
     const docRef = doc(db, currentUser.email, item.id);
       deleteDoc(docRef)
         .then(() => {
-          console.log("Entire Document has been deleted successfully.")
           let elementToFilter = item;
           setCartItems(cartItems.filter(item => item.id !== elementToFilter.id));
       })
         .catch(error => {
           console.log(error);
     })
+    props.decreaseCartItemsCounter()
   }
 
   const handleSortItems = () => {
