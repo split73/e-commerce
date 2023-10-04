@@ -7,7 +7,6 @@ import Login from "./auth/auth-components/Login";
 import PrivateRoute from "./auth/auth-components/PrivateRoute";
 import ForgotPassword from "./auth/auth-components/ForgotPassword";
 import UpdateProfile from "./auth/auth-components/UpdateProfile";
-import Content from "./components/Content";
 
 function App() {
   return (
