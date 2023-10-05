@@ -21,7 +21,7 @@ import "react-toggle/style.css"
 
 export default function TopNavbar() {
 
-
+console.log("QQQQQQQ")
   const [showSideBar, setShowSideBar] = useState(false);
   const { currentUser } = useAuth();
   const [searchInput, setSearchInput] = useState("");
