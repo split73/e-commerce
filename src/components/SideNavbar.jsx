@@ -2,6 +2,9 @@ import React, {useState} from 'react'
 import { Container, Offcanvas, Form } from 'react-bootstrap';  
 import Toggle from "react-toggle";
 import "./assets/sideBar.css";
+import GitHub_Logo from "./assets/image/GitHub_Logo.png"
+import github_mark from "./assets/image/github-mark.png"
+
 export default function SideNavbar(props) {
   const [isDark, setIsDark] = useState(true);
     
@@ -13,16 +16,10 @@ export default function SideNavbar(props) {
           <Offcanvas.Title>Sidebar Title</Offcanvas.Title>  
         </Offcanvas.Header>  
         <Offcanvas.Body>  
-        <Form>
-        <div className="mb-3">
-          <Form.Check
-            type={"checkbox"}
-            id={`default-checkbox`}
-            label={`default checkbox`}
-          />
-        </div>
-      
-    </Form>
+        <a href='https://github.com/split73/e-commerce'>
+        <img src={github_mark} alt='github' style={{height: "auto", width: "auto", maxHeight: "50px"}}></img>
+        <img src={GitHub_Logo} alt='github' style={{height: "auto", width: "auto", maxHeight: "50px"}}></img>
+        </a>
     <div>Dark mode</div>
           <Toggle
               checked={isDark}
