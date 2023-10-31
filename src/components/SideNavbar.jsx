@@ -13,20 +13,20 @@ export default function SideNavbar(props) {
     <Container className='p-4' >  
       <Offcanvas show={props.showSideBarProp} id="sideBar" onHide={props.hideSideBarProp}>  
         <Offcanvas.Header closeButton>  
-          <Offcanvas.Title>Sidebar Title</Offcanvas.Title>  
+          <Offcanvas.Title>Links</Offcanvas.Title>  
         </Offcanvas.Header>  
         <Offcanvas.Body>  
         <a href='https://github.com/split73/e-commerce'>
         <img src={github_mark} alt='github' style={{height: "auto", width: "auto", maxHeight: "50px"}}></img>
         <img src={GitHub_Logo} alt='github' style={{height: "auto", width: "auto", maxHeight: "50px"}}></img>
         </a>
-    <div>Dark mode</div>
+    {/* <div>Dark mode</div>
           <Toggle
               checked={isDark}
               onChange={({ target }) => setIsDark(target.checked)}
               icons={{ checked: "", unchecked: "" }}
               aria-label="Dark mode toggle"
-            />
+            /> */}
         </Offcanvas.Body>  
       </Offcanvas>  
       </Container>  
