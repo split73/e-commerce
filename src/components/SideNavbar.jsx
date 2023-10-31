@@ -13,7 +13,7 @@ export default function SideNavbar(props) {
     <Container className='p-4' >  
       <Offcanvas show={props.showSideBarProp} id="sideBar" onHide={props.hideSideBarProp}>  
         <Offcanvas.Header closeButton>  
-          {/* <Offcanvas.Title>Links</Offcanvas.Title>   */}
+          <Offcanvas.Title></Offcanvas.Title>  
         </Offcanvas.Header>  
         <Offcanvas.Body>  
         <a href='https://github.com/split73/e-commerce'>
